@@ -21,13 +21,13 @@ add_executable(test_runner main_test.cpp)
 
 target_link_libraries(test_runner 
     PRIVATE 
-    common
+    config
     GTest::gtest
     GTest::gtest_main
 )
 
 target_include_directories(test_runner PRIVATE 
-    ${CMAKE_SOURCE_DIR}/src/common
+    ${CMAKE_SOURCE_DIR}/src/config
 )
 
 set_target_properties(test_runner PROPERTIES

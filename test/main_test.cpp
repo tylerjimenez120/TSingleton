@@ -1,35 +1,20 @@
-/**
- * @file main_test.cpp
- * @brief Test file for CXX Template project
- * @author rouxfederico@gmail.com
- */
+#include <gtest/gtest.h>
 
-#include <common.h>
-#include <gtest/gtest.h>  // NOLINT
+#include "SystemConfig.h"
 
-/**
- * @brief Test case for Common::add function
- */
-TEST(CommonTest, AddTest) {
-    Common c;
-    EXPECT_EQ(c.add(2, 3), 5);
-    EXPECT_EQ(c.add(0, 0), 0);
-    EXPECT_EQ(c.add(-1, 1), 0);
-    EXPECT_EQ(c.add(10, -5), 5);
+// Test 1: Verificar que siempre obtenemos la misma instancia (dirección de memoria)
+TEST(SingletonSuite, IdentityTest) {
+    SystemConfig& instance1 = SystemConfig::getInstance();
+    SystemConfig& instance2 = SystemConfig::getInstance();
+
+    EXPECT_EQ(&instance1, &instance2) << "Error: Las direcciones de memoria son distintas";
 }
 
-/**
- * @brief Test case for Common::talk function
- */
-TEST(CommonTest, TalkTest) {
-    Common c;
-    EXPECT_EQ(c.talk(), 0);
-}
+// Test 2: Verificar que los datos persisten globalmente
+TEST(SingletonSuite, DataPersistenceTest) {
+    SystemConfig::getInstance().setBaudRate(9600);
 
-/**
- * @brief Test case for Common object creation
- */
-TEST(CommonTest, ConstructorTest) {
-    Common c;
-    SUCCEED();
+    // Simulamos acceso desde otra parte del código
+    uint32_t currentBaud = SystemConfig::getInstance().getBaudRate();
+    EXPECT_EQ(currentBaud, 9600);
 }
